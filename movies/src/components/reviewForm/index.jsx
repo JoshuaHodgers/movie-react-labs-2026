@@ -5,6 +5,26 @@ import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useForm, Controller } from "react-hook-form";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import { useNavigate } from "react-router";
+      
+      <Snackbar
+        sx={styles.snack}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        open={open}
+        onClose={handleSnackClose}
+      >
+        <MuiAlert
+          severity="success"
+          variant="filled"
+          onClose={handleSnackClose}
+        >
+          <Typography variant="h4">
+            Thank you for submitting a review
+          </Typography>
+        </MuiAlert>
+      </Snackbar>
 
 const ratings = [
   {
@@ -82,6 +102,11 @@ const ReviewForm = ({ movie }) => {
     review.rating = rating;
     console.log(review);
   };
+  const handleSnackClose = (event) => {
+    setOpen(false);
+    navigate("/movies/favorites");
+  };
+
 
   return (
     <Box component="div" sx={styles.root}>
@@ -194,6 +219,7 @@ const ReviewForm = ({ movie }) => {
       </form>
     </Box>
   );
+  
 };
 
 export default ReviewForm;
