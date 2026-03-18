@@ -12,6 +12,9 @@ import StarRateIcon from "@mui/icons-material/StarRate";
 import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
 import img from '../../images/film-poster-placeholder.png'
+import React, { useContext  } from "react";
+import { MoviesContext } from "../../contexts/moviesContext";
+
 
 export default function MovieCard(props) {
   const movie = props.movie;
