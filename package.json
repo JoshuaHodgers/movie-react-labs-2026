@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "@tanstack/react-query": "^5.91.0",
-    "lodash": "^4.17.23"
+    "lodash": "^4.17.23",
+    "react-hook-form": "^7.71.2"
   },
   "devDependencies": {
     "@tanstack/react-query-devtools": "^5.91.3"
