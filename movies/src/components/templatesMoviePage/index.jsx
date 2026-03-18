@@ -4,9 +4,27 @@ import Grid from "@mui/material/Grid";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import { getMovieImages } from "../../api/tmdb-api";
+import { useQuery } from "@tanstack/react-query";
+import Spinner from '../spinner'
 
-const TemplateMoviePage = ({ movie, children }) => {
-  const [images, setImages] = useState([]);
+
+function MovieListPageTemplate({ movies, title, action }) 
+ {
+    const { data, error, isPending, isError } = useQuery({
+    queryKey: ['images', { id: movie.id }],
+    queryFn: getMovieImages,
+  });
+
+  if (isPending) {
+    return <Spinner />;
+  }
+
+  if (isError) {
+    return <h1>{error.message}</h1>;
+  }
+  
+  const images = data.posters 
+
 
   useEffect(() => {
     getMovieImages(movie.id).then((images) => {

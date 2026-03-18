@@ -16,7 +16,8 @@ import React, { useContext  } from "react";
 import { MoviesContext } from "../../contexts/moviesContext";
 
 
-export default function MovieCard(props) {
+export default function MovieCard({ movie, action }) 
+ {
   const movie = props.movie;
   return (
     <Card>
@@ -45,14 +46,18 @@ export default function MovieCard(props) {
           </Grid>
         </Grid>
       </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites" onClick={null}>
-          <FavoriteIcon color="primary" fontSize="large" />
-        </IconButton>
-        <Button variant="outlined" size="medium" color="primary">
-          More Info ...
-        </Button>
+            <CardActions disableSpacing>
+      
+        {action(movie)}
+      
+        <Link to={`/movies/${movie.id}`}>
+          <Button variant="outlined" size="medium" color="primary">
+            More Info ...
+          </Button>
+        </Link>
+        
       </CardActions>
+
     </Card>
   );
 }
