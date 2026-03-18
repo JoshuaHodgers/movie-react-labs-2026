@@ -9,16 +9,45 @@ import Paper from "@mui/material/Paper";
 import { Link } from "react-router";
 import { getMovieReviews } from "../../api/tmdb-api";
 import { excerpt } from "../../util";
+import { useQuery } from "@tanstack/react-query";
+import Spinner from '../spinner'
+
 
 export default function MovieReviews({ movie }) {
-  const [reviews, setReviews] = useState([]);
+    const { data, error, isPending, isError } = useQuery({
+    queryKey: ['reviews', { id: movie.id }],
+    queryFn: getMovieReviews,
+  });
+  
+  if (isPending) {
+    return <Spinner />;
+  }
 
-  useEffect(() => {
-    getMovieReviews(movie.id).then((reviews) => {
-      setReviews(reviews);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  if (isError) {
+    return <h1>{error.message}</h1>;
+  }
+  
+  const reviews = data.results;
+
+
+  export const getMovieReviews = ({ queryKey }) => {
+    const [, idPart] = queryKey;
+    const { id } = idPart;
+    return fetch(
+      `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    ).then( (response) => {
+      if (!response.ok) {
+        return response.json().then((error) => {
+          throw new Error(error.status_message || "Something went wrong");
+        });
+      }
+      return response.json();
+    })
+    .catch((error) => {
+      throw error
+   });
+  };
+
 
   return (
     <TableContainer component={Paper}>
