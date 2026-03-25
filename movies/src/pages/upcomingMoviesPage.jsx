@@ -1,15 +1,15 @@
 import React from "react";
-import { getMovies } from "../api/tmdb-api";
-import PageTemplate from "../components/templateMovieListPage";
 import { useQuery } from "@tanstack/react-query";
+import { getUpcomingMovies } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
+import PageTemplate from "../components/templateMovieListPage";
 import AddToFavoritesIcon from "../components/cardIcons/addToFavorites";
 import AddToMustWatchIcon from "../components/cardIcons/addToMustWatch";
 
-const HomePage = () => {
+const UpcomingMoviesPage = () => {
   const { data, error, isPending, isError } = useQuery({
-    queryKey: ["discover"],
-    queryFn: getMovies,
+    queryKey: ["upcoming"],
+    queryFn: getUpcomingMovies,
   });
 
   if (isPending) {
@@ -20,12 +20,10 @@ const HomePage = () => {
     return <h1>{error.message}</h1>;
   }
 
-  const movies = data.results;
-
   return (
     <PageTemplate
-      title="Discover Movies"
-      movies={movies}
+      title="Upcoming Movies"
+      movies={data.results}
       action={(movie) => {
         return (
           <>
@@ -38,4 +36,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default UpcomingMoviesPage;

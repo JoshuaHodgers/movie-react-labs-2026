@@ -1,7 +1,6 @@
 import React from "react";
-import { useParams } from 'react-router';
 import MovieDetails from "../components/movieDetails/";
-import PageTemplate from "../components/templateMoviePage";
+import PageTemplate from "../components/templatesMoviePage";
 import useMovie from "../hooks/useMovie";
 import { getMovie } from '../api/tmdb-api'
 import { useQuery } from '@tanstack/react-query';

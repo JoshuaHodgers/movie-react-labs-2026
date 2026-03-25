@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
@@ -7,24 +7,7 @@ import Box from "@mui/material/Box";
 import { useForm, Controller } from "react-hook-form";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import { useNavigate } from "react-router";
-      
-      <Snackbar
-        sx={styles.snack}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={open}
-        onClose={handleSnackClose}
-      >
-        <MuiAlert
-          severity="success"
-          variant="filled"
-          onClose={handleSnackClose}
-        >
-          <Typography variant="h4">
-            Thank you for submitting a review
-          </Typography>
-        </MuiAlert>
-      </Snackbar>
+
 
 const ratings = [
   {
@@ -78,20 +61,22 @@ const styles = {
 
 const ReviewForm = ({ movie }) => {
   const [rating, setRating] = useState(3);
-  
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
   const defaultValues = {
     author: "",
     review: "",
     agree: false,
     rating: "3",
   };
-  
+
   const {
     control,
     formState: { errors },
     handleSubmit,
     reset,
-  } = useForm(defaultValues);
+  } = useForm({ defaultValues });
 
   const handleRatingChange = (event) => {
     setRating(event.target.value);
@@ -101,12 +86,13 @@ const ReviewForm = ({ movie }) => {
     review.movieId = movie.id;
     review.rating = rating;
     console.log(review);
+    setOpen(true);
   };
-  const handleSnackClose = (event) => {
+
+  const handleSnackClose = () => {
     setOpen(false);
     navigate("/movies/favorites");
   };
-
 
   return (
     <Box component="div" sx={styles.root}>
@@ -135,11 +121,13 @@ const ReviewForm = ({ movie }) => {
             />
           )}
         />
+
         {errors.author && (
           <Typography variant="h6" component="p">
             {errors.author.message}
           </Typography>
         )}
+
         <Controller
           name="review"
           control={control}
@@ -164,6 +152,7 @@ const ReviewForm = ({ movie }) => {
             />
           )}
         />
+
         {errors.review && (
           <Typography variant="h6" component="p">
             {errors.review.message}
@@ -173,7 +162,7 @@ const ReviewForm = ({ movie }) => {
         <Controller
           control={control}
           name="rating"
-          render={({ field: { onChange, value } }) => (
+          render={() => (
             <TextField
               id="select-rating"
               select
@@ -201,6 +190,7 @@ const ReviewForm = ({ movie }) => {
           >
             Submit
           </Button>
+
           <Button
             type="reset"
             variant="contained"
@@ -209,7 +199,7 @@ const ReviewForm = ({ movie }) => {
             onClick={() => {
               reset({
                 author: "",
-                content: "",
+                review: "",
               });
             }}
           >
@@ -217,9 +207,25 @@ const ReviewForm = ({ movie }) => {
           </Button>
         </Box>
       </form>
+
+      <Snackbar
+        sx={styles.snack}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        open={open}
+        onClose={handleSnackClose}
+      >
+        <MuiAlert
+          severity="success"
+          variant="filled"
+          onClose={handleSnackClose}
+        >
+          <Typography variant="h6">
+            Thank you for submitting a review
+          </Typography>
+        </MuiAlert>
+      </Snackbar>
     </Box>
   );
-  
 };
 
 export default ReviewForm;
